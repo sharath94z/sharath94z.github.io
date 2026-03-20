@@ -1,70 +1,1107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="format-detection" content="telephone=no">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-	<meta name="description" content="Meta descriptions are HTML attributes that provide concise explanations of the contents of web pages. They should optimally be between 150-160 characters.">
-	<meta name="author" content="SvenCreations">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sharath Aradhyamath — DevOps / SRE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --white: #ffffff;
+      --off: #f7f6f3;
+      --stone: #e8e5df;
+      --mid: #9e9890;
+      --ink: #1a1916;
+      --ink-soft: #4a4742;
+      --accent: #c84b2f;
+      --accent-light: #f5ede9;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
 
-	<!-- Touch icons for android and iOS (Bookmark icons) -->
-	<link rel="shortcut icon" sizes="192x192" href="images/icons/android-icon-192x192.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="images/icons/apple-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="images/icons/apple-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="images/icons/apple-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="images/icons/apple-icon-152x152.png">
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
-	<!-- Schema.org markup for Google+ and facebook -->
-	<!-- <meta property="og:title" content="Title should be concise">
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content="http://your-website-url.com"/>
-	<meta property="og:image" content="Use images that are at least 1200 x 630 pixels for the best display on high resolution devices">
-	<meta property="og:description" content="A description that concisely summarizes the content of the page"> -->
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
 
-	<!-- Schema.org markup for twitter cards(summary_large_image) -->
-	<!-- <meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:site" content="@username">
-	<meta name="twitter:title" content="Title should be concise and will be truncated at 70 characters.">
-	<meta name="twitter:description" content="A description that concisely summarizes the content of the page, as appropriate for presentation within a Tweet. Do not re-use the title text as the description, or use this field to describe the general services provided by the website. Description text will be truncated at the word to 200 characters.">
-	<meta name="twitter:image" content="URL to a unique image representing the content of the page. Do not use a generic image such as your website logo, author photo, or other image that spans multiple pages. Images for this Card should be at least 280px in width, and at least 150px in height. Image must be less than 1MB in size."> -->
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 64px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.72) 0%,
+        rgba(255, 255, 255, 0.55) 100%
+      );
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow:
+        0 1px 0 0 rgba(255,255,255,0.8) inset,
+        0 4px 24px rgba(0, 0, 0, 0.06),
+        0 1px 4px rgba(0, 0, 0, 0.04);
+    }
 
-	<title>Personal Website</title>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400">
-	<link rel="stylesheet" href="css/main.css">
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--ink);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ── PAGE LOAD PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--accent);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 64px;
+      position: relative;
+    }
+
+    /* Circle + sun rays on the divider between panels */
+    .hero-divider-circle {
+      position: absolute;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .hero-sun-flare {
+      position: absolute;
+      left: 50%; top: 30%;
+      transform: translate(-50%, -50%);
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%,
+        rgba(200,75,47,0.14) 0%,
+        rgba(200,75,47,0.06) 35%,
+        rgba(200,75,47,0.02) 55%,
+        transparent 70%
+      );
+      clip-path: inset(0 50% 0 0);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px 80px 60px;
+      border-right: 1px solid var(--stone);
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(44px, 5.5vw, 74px);
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--ink-soft);
+      max-width: 440px;
+      line-height: 1.8;
+      margin-bottom: 44px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 12px 26px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-fill {
+      background: var(--ink);
+      color: var(--white);
+      border: 1.5px solid var(--ink);
+    }
+
+    .btn-fill:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--stone);
+    }
+
+    .hero-left .btn-outline {
+      color: var(--ink);
+      border-color: var(--stone);
+    }
+
+    .hero-left .btn-outline:hover {
+      border-color: var(--ink);
+    }
+
+    .hero-right {
+      background: #1a1916;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 60px 60px 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── CURRENTLY CARD ── */
+    .currently-card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 24px 28px;
+      width: 100%;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+      animation: heroFadeUp 0.6s ease 0.3s both;
+    }
+
+    .currently-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #c84b2f;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .currently-label::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #c84b2f;
+      animation: pulse-green 2s infinite;
+    }
+
+    .currently-company {
+      font-family: var(--serif);
+      font-size: 32px;
+      color: #e6edf3;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .currently-role {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 24px;
+    }
+
+    .currently-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin: 20px 0;
+    }
+
+    .currently-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .currently-detail:last-of-type { margin-bottom: 0; }
+
+    .currently-detail-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .currently-detail-val {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      font-weight: 500;
+    }
+
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(200,75,47,0.4); }
+      50% { box-shadow: 0 0 0 5px rgba(200,75,47,0); }
+    }
+
+    /* ── SECTION COMMONS ── */
+    .section-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 100px 60px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 56px;
+    }
+
+    .section-label-num {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .section-label-title {
+      font-family: var(--serif);
+      font-size: 38px;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+
+    .section-label-line {
+      flex: 1;
+      height: 1px;
+      background: var(--stone);
+    }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--off); }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .skills-intro {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--ink-soft);
+      line-height: 1.85;
+      position: sticky;
+      top: 88px;
+    }
+
+    .skills-intro strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .skills-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--stone);
+      background: var(--stone);
+    }
+
+    .skill-row {
+      background: var(--white);
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--stone);
+      transition: background 0.15s;
+    }
+
+    .skill-row:last-child { border-bottom: none; }
+    .skill-row:hover { background: var(--accent-light); }
+
+    .skill-row-label {
+      padding: 18px 24px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      border-right: 1px solid var(--stone);
+      display: flex;
+      align-items: center;
+    }
+
+    .skill-row-items { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 18px 24px; }
+
+    .pill {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--off);
+      border: 1px solid var(--stone);
+      padding: 3px 11px;
+      border-radius: 100px;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--white); }
+
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 40px;
+      padding: 48px 0;
+      border-top: 1px solid var(--stone);
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+
+    .exp-item:hover::before { transform: scaleY(1); }
+
+    .exp-item:hover { padding-left: 12px; }
+
+    .exp-item:last-child { border-bottom: 1px solid var(--stone); }
+
+    .exp-meta {
+      padding-top: 4px;
+    }
+
+    .exp-period {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--mid);
+      margin-bottom: 6px;
+    }
+
+    .exp-location {
+      font-size: 12px;
+      color: var(--mid);
+    }
+
+    .exp-body {}
+
+    .exp-company {
+      font-family: var(--serif);
+      font-size: 26px;
+      letter-spacing: -0.3px;
+      color: var(--ink);
+      margin-bottom: 4px;
+      line-height: 1.1;
+    }
+
+    .exp-role {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .exp-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .exp-points li {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .exp-points li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--stone);
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .exp-tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+      background: var(--off);
+      border: 1px solid var(--stone);
+      padding: 3px 9px;
+      border-radius: 2px;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--ink); }
+
+    #contact .section-label-title { color: var(--white); }
+    #contact .section-label-num { color: #c84b2f; }
+    #contact .section-label-line { background: #2e2c29; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .contact-left h3 {
+      font-family: var(--serif);
+      font-size: 38px;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .contact-left h3 em {
+      font-style: italic;
+      color: #c84b2f;
+    }
+
+    .contact-left p {
+      font-size: 15px;
+      font-weight: 300;
+      color: #9e9890;
+      line-height: 1.8;
+      max-width: 380px;
+      margin-bottom: 36px;
+    }
+
+    .contact-links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid #2e2c29;
+    }
+
+    .contact-link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid #2e2c29;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .contact-link-row:last-child { border-bottom: none; }
+    .contact-link-row:hover { background: #2e2c29; }
+
+    .contact-link-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6e6b65;
+    }
+
+    .contact-link-val {
+      font-size: 14px;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-link-val .arrow {
+      color: #6e6b65;
+      font-size: 12px;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .contact-link-row:hover .arrow {
+      transform: translateX(3px);
+      color: var(--accent);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid #2e2c29;
+      padding: 24px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: #6e6b65;
+    }
+
+    footer p span { color: #9e9890; }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── HERO STAGGER ENTRANCE ── */
+    .hero-eyebrow,
+    .hero-h1-word,
+    .hero-desc,
+    .hero-cta {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: heroFadeUp 0.5s ease forwards;
+    }
+
+    .hero-eyebrow    { animation-delay: 0.1s; }
+    .hero-h1-word    { animation-delay: calc(0.2s + var(--i) * 0.08s); }
+    .hero-desc       { animation-delay: 0.52s; }
+    .hero-cta        { animation-delay: 0.66s; }
+
+    @keyframes heroFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION TITLE CLIP REVEAL ── */
+    .section-label-title {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .section-label-title span {
+      display: block;
+      transform: translateY(100%);
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .section-label.visible .section-label-title span {
+      transform: translateY(0);
+    }
+
+    /* ── SKILL PILL HOVER POP ── */
+    .pill {
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s, border-color 0.15s;
+    }
+
+    .pill:hover {
+      transform: scale(1.08);
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 60px 24px; }
+      .hero-right { display: none; }
+      .section-wrap { padding: 72px 24px; }
+      .skills-layout { grid-template-columns: 1fr; }
+      .skills-intro { position: static; }
+      .exp-item { grid-template-columns: 1fr; gap: 8px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
 </head>
-<body id="minimos-1">
+<body>
 
-	<div class="preloader abs-center">
-		<div class="spinner"></div>
-	</div>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Sharath Aradhyamath</div>
+    <ul class="nav-links">
+      <li><a href="#hero">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="Sharath-Aradhyamath-Resume.pdf" download class="btn btn-fill" style="font-size:12px; padding: 8px 18px;">Download CV</a>
+  </nav>
 
-	<div class="content-wrapper">
-		<div class="v-center">
-			<div class="main-content">
-				<h1>SHARATH ARADHYAMATH</h1>
-				<p>DevOps Engineer at <span style="color: red;">Rapyuta Robotics.</span></p>
+  <!-- HERO -->
+  <section id="hero">
+    <!-- Circle on the dividing line -->
+    <div class="hero-sun-flare"></div>
+    <div class="hero-divider-circle">
+      <svg width="320" height="320" viewBox="-160 -160 320 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="lh"><rect x="-160" y="-160" width="162" height="320"/></clipPath>
+          <clipPath id="rh"><rect x="0" y="-160" width="160" height="320"/></clipPath>
+        </defs>
+        <!-- S-curve rays, left side only, perfectly symmetrical -->
+        <g clip-path="url(#lh)" fill="#c84b2f">
+          <g transform="rotate(0)">    <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z"/></g>
+          <g transform="rotate(-30)">  <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z" opacity="0.6"/></g>
+          <g transform="rotate(-60)">  <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z"/></g>
+          <g transform="rotate(-90)">  <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z" opacity="0.6"/></g>
+          <g transform="rotate(-120)"> <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z"/></g>
+          <g transform="rotate(-150)"> <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z" opacity="0.6"/></g>
+          <g transform="rotate(-180)"> <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z"/></g>
+          <g transform="rotate(30)">   <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z" opacity="0.6"/></g>
+          <g transform="rotate(60)">   <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z"/></g>
+          <g transform="rotate(90)">   <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z" opacity="0.6"/></g>
+          <g transform="rotate(120)">  <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z"/></g>
+          <g transform="rotate(150)">  <path d="M-5,-66 C-22,-85 16,-118 0,-148 C-16,-118 22,-85 5,-66 Z" opacity="0.6"/></g>
+        </g>
+        <!-- Sun semicircle — terracotta, left -->
+        <path d="M0,-66 A66,66 0 0,0 0,66 Z" fill="#c84b2f" clip-path="url(#lh)"/>
+        <!-- Moon semicircle — off-white, right -->
+        <path d="M0,-66 A66,66 0 0,1 0,66 Z" fill="#f7f6f3" clip-path="url(#rh)"/>
+      </svg>
+    </div>
+    <div class="hero-left">
+      <div class="hero-eyebrow">DevOps · SRE · Infrastructure</div>
+      <h1>
+        <span class="hero-h1-word" style="--i:0">Building</span>
+        <span class="hero-h1-word" style="--i:1">systems</span><br/>
+        <span class="hero-h1-word" style="--i:2">that</span>
+        <span class="hero-h1-word" style="--i:3"><em>don't</em></span><br/>
+        <span class="hero-h1-word" style="--i:4">break</span>
+        <span class="hero-h1-word" style="--i:5">at</span>
+        <span class="hero-h1-word" style="--i:6">3am.</span>
+      </h1>
+      <p class="hero-desc">
+        <span id="exp-years"></span> years designing and operating resilient infrastructure — Kubernetes at scale,
+        cloud-native tooling, and monitoring systems that give engineers clarity instead of noise.
+        Currently based in Tokyo.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-fill">Get in touch</a>
+        <a href="Sharath-Aradhyamath-Resume.pdf" download class="btn btn-outline">Download CV ↓</a>
+        <a href="https://github.com/sharath-aradhyamath" target="_blank" class="btn btn-outline">GitHub ↗</a>
+        <a href="https://linkedin.com/in/sharath-aradhyamath" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+      </div>
+    </div>
 
-				<ul>
-					<li><a href="https://www.linkedin.com/in/sharath-aradhyamath/">LInkedIn</a></li>
-					<li><a href="mailto:sharatham94@gmail.com">Contact</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
+    <div class="hero-right">
+      <div class="currently-card">
+        <div class="currently-label">Currently</div>
+        <div class="currently-company">Rakuten</div>
+        <div class="currently-role">Platform Engineer</div>
+        <div class="currently-divider"></div>
+        <div class="currently-detail">
+          <span class="currently-detail-label">Since</span>
+          <span class="currently-detail-val">Aug 2025</span>
+        </div>
+        <div class="currently-detail">
+          <span class="currently-detail-label">Location</span>
+          <span class="currently-detail-val">Tokyo, Japan</span>
+        </div>
+        <div class="currently-detail">
+          <span class="currently-detail-label">Focus</span>
+          <span class="currently-detail-val">Platform Engineering</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	<!-- =================================================================
-	COMPILED JS PLUGINS
-	================================================================== -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
-	<script src="js/dependencies.js"></script>
-	<script src="js/main.js"></script>
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-wrap">
+      <div class="section-label reveal">
+        <span class="section-label-num">01 — Skills</span>
+        <h2 class="section-label-title"><span>What I work with</span></h2>
+        <div class="section-label-line"></div>
+      </div>
 
+      <div class="skills-layout">
+        <div class="skills-intro reveal">
+          <strong>Deep expertise</strong> in cloud-native infrastructure, from day-zero provisioning through
+          production observability. I pick the right tool for the job — and make sure the next engineer
+          can understand it too.
+        </div>
+
+        <div class="skills-grid reveal">
+          <div class="skill-row">
+            <div class="skill-row-label">Cloud</div>
+            <div class="skill-row-items">
+              <span class="pill">AWS</span>
+              <span class="pill">Azure</span>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-row-label">Containers</div>
+            <div class="skill-row-items">
+              <span class="pill">Kubernetes</span>
+              <span class="pill">Docker</span>
+              <span class="pill">Helm</span>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-row-label">IaC</div>
+            <div class="skill-row-items">
+              <span class="pill">Terraform</span>
+              <span class="pill">Ansible</span>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-row-label">Observability</div>
+            <div class="skill-row-items">
+              <span class="pill">Prometheus</span>
+              <span class="pill">Grafana</span>
+              <span class="pill">Datadog</span>
+              <span class="pill">OpenTelemetry</span>
+              <span class="pill">ELK Stack</span>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-row-label">CI/CD</div>
+            <div class="skill-row-items">
+              <span class="pill">GitHub Actions</span>
+              <span class="pill">Spinnaker</span>
+              <span class="pill">Fastlane</span>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-row-label">Languages</div>
+            <div class="skill-row-items">
+              <span class="pill">Python</span>
+              <span class="pill">Golang</span>
+              <span class="pill">Bash</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-wrap">
+      <div class="section-label reveal">
+        <span class="section-label-num">02 — Experience</span>
+        <h2 class="section-label-title"><span>Where I've worked</span></h2>
+        <div class="section-label-line"></div>
+      </div>
+
+      <div class="exp-list">
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <div class="exp-period">Aug 2025 — Present</div>
+            <div class="exp-location">Tokyo, Japan</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-company">Rakuten</div>
+            <div class="exp-role">Platform Engineer</div>
+            <ul class="exp-points">
+              <li>Platform engineering at one of Japan's largest technology and e-commerce companies, operating across global-scale infrastructure.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">Platform Engineering</span>
+              <span class="exp-tag">Tokyo</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <div class="exp-period">Aug 2024 — Aug 2025</div>
+            <div class="exp-location">Bengaluru, India</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-company">Safe Security</div>
+            <div class="exp-role">DevOps Engineer</div>
+            <ul class="exp-points">
+              <li>Redesigned CI/CD pipeline using reusable GitHub Actions workflows, providing a structured framework for cross-team adoption and faster shipping.</li>
+              <li>Migrated the entire AWS CDK codebase to Terraform, significantly improving infrastructure maintainability and module reusability.</li>
+              <li>Decomposed a monolithic repository into independently deployable microservices, reducing deployment risk and enabling team autonomy.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">Terraform</span>
+              <span class="exp-tag">GitHub Actions</span>
+              <span class="exp-tag">AWS</span>
+              <span class="exp-tag">Microservices</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <div class="exp-period">May 2022 — Jul 2024</div>
+            <div class="exp-location">Tokyo, Japan</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-company">Rapyuta Robotics</div>
+            <div class="exp-role">Site Reliability Engineer</div>
+            <ul class="exp-points">
+              <li>Built a full observability platform (Prometheus, Loki, Tempo, Grafana + OpenTelemetry) delivering real-time insights across 100+ active warehouse robots.</li>
+              <li>Authored Ansible playbooks with a Semaphore UI frontend, enabling non-engineers to independently trigger complex robot onboarding tasks.</li>
+              <li>Introduced PostgreSQL backup and recovery via Barman, dramatically reducing RTO and boosting confidence in the operations team's ability to recover from data corruption.</li>
+              <li>Sole SRE in a 25+ engineer ASRS product team, reporting directly to the CEO — handling everything from hardware procurement to production incident response.</li>
+              <li>Managed the entire wireless network infrastructure (Unifi Dream Machine SE, switches, APs) for the robot fleet, including coverage optimisation via Unifi Design Center.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">Prometheus</span>
+              <span class="exp-tag">Grafana</span>
+              <span class="exp-tag">Ansible</span>
+              <span class="exp-tag">PostgreSQL</span>
+              <span class="exp-tag">Robotics</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <div class="exp-period">Nov 2020 — Mar 2022</div>
+            <div class="exp-location">Bengaluru, India</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-company">Vogo Automotive</div>
+            <div class="exp-role">DevOps Engineer</div>
+            <ul class="exp-points">
+              <li>Led and mentored a 3-person DevOps team, setting standards for deployments, on-call, and infrastructure quality.</li>
+              <li>Migrated 95% of all workloads to Kubernetes on EKS — including stateful services like MongoDB, Kafka, and Airflow — reducing downtime and infrastructure costs.</li>
+              <li>Built a full GitHub Actions + Spinnaker pipeline for rapid, stable production releases with developer-facing feedback loops.</li>
+              <li>Automated Android APK builds and Play Store releases with Fastlane, removing a manual bottleneck for QA and developers.</li>
+              <li>Deployed and operated a Linked Service Mesh, improving inter-service security and network observability.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">Kubernetes</span>
+              <span class="exp-tag">EKS</span>
+              <span class="exp-tag">Helm</span>
+              <span class="exp-tag">Spinnaker</span>
+              <span class="exp-tag">Datadog</span>
+              <span class="exp-tag">Fastlane</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <div class="exp-period">May 2018 — Oct 2020</div>
+            <div class="exp-location">Bengaluru, India</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-company">Evive</div>
+            <div class="exp-role">DevOps Engineer</div>
+            <ul class="exp-points">
+              <li>Sole DevOps engineer for the MyEvive product — owned cloud infrastructure, deployments to staging and production, and peak-season capacity planning.</li>
+              <li>Wrote Salt modules to auto-configure new servers, reducing manual provisioning overhead.</li>
+              <li>Reduced developer workload by building migration and ETL scripts, and providing debugging support for reporting pipeline issues.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">AWS</span>
+              <span class="exp-tag">Salt Stack</span>
+              <span class="exp-tag">Python</span>
+              <span class="exp-tag">Linux</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-wrap">
+      <div class="section-label reveal">
+        <span class="section-label-num">03 — Contact</span>
+        <h2 class="section-label-title" style="color:var(--white)"><span>Let's talk</span></h2>
+        <div class="section-label-line" style="background:#2e2c29"></div>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-left reveal">
+          <h3>Let's build<br/>something <em>reliable.</em></h3>
+          <p>
+            Currently building platform infrastructure at Rakuten in Tokyo. Always happy to
+            connect with fellow engineers, discuss interesting problems, or explore what's next.
+          </p>
+          <a href="mailto:sharatham94@gmail.com" class="btn btn-fill" style="width:fit-content; background:#c84b2f; border-color:#c84b2f; color:#fff;">
+            Send an email →
+          </a>
+        </div>
+
+        <div class="contact-links-list reveal">
+          <a href="mailto:sharatham94@gmail.com" class="contact-link-row">
+            <span class="contact-link-label">Email</span>
+            <span class="contact-link-val">sharatham94@gmail.com <span class="arrow">↗</span></span>
+          </a>
+          <a href="https://linkedin.com/in/sharath-aradhyamath" target="_blank" class="contact-link-row">
+            <span class="contact-link-label">LinkedIn</span>
+            <span class="contact-link-val">sharath-aradhyamath <span class="arrow">↗</span></span>
+          </a>
+          <a href="https://github.com/sharath-aradhyamath" target="_blank" class="contact-link-row">
+            <span class="contact-link-label">GitHub</span>
+            <span class="contact-link-val">sharath-aradhyamath <span class="arrow">↗</span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESS BAR -->
+  <div id="progress-bar"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© <span id="year"></span> <span>Sharath Aradhyamath</span></p>
+    <p>DevOps · SRE · Tokyo</p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Years of experience from May 2018
+    const start = new Date(2018, 4, 1); // May 2018
+    const years = Math.floor((new Date() - start) / (1000 * 60 * 60 * 24 * 365.25));
+    const yearWords = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'];
+    document.getElementById('exp-years').textContent = yearWords[years] || years;
+
+    // ── PAGE LOAD PROGRESS BAR ──
+    const bar = document.getElementById('progress-bar');
+    let width = 0;
+    const interval = setInterval(() => {
+      width += Math.random() * 18;
+      if (width >= 90) { clearInterval(interval); width = 90; }
+      bar.style.width = width + '%';
+    }, 80);
+    window.addEventListener('load', () => {
+      clearInterval(interval);
+      bar.style.width = '100%';
+      setTimeout(() => { bar.style.opacity = '0'; bar.style.transition = 'opacity 0.4s'; }, 300);
+    });
+
+    // ── SCROLL REVEAL ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+          observer.unobserve(el.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── ACTIVE NAV ON SCROLL ──
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const ids = ['hero', 'skills', 'experience', 'contact'];
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 100) cur = id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--ink)' : '';
+      });
+    });
+  </script>
 </body>
 </html>
