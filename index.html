@@ -4,7 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sharath Aradhyamath — DevOps / SRE</title>
+  <meta name="description" content="DevOps / SRE engineer in Tokyo. Kubernetes at scale, cloud-native infrastructure, and observability platforms that give engineers clarity instead of noise." />
+  <link rel="canonical" href="https://sharath94z.github.io/" />
+  <meta name="theme-color" content="#1a1916" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231a1916'/%3E%3Cpath d='M50 24a26 26 0 0 0 0 52z' fill='%23c84b2f'/%3E%3Cpath d='M50 24a26 26 0 0 1 0 52z' fill='%23f7f6f3'/%3E%3C/svg%3E" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Sharath Aradhyamath — DevOps / SRE" />
+  <meta property="og:description" content="Building systems that don't break at 3am. Platform engineer at Rakuten, Tokyo." />
+  <meta property="og:url" content="https://sharath94z.github.io/" />
+  <meta name="twitter:card" content="summary" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Sharath Aradhyamath",
+    "jobTitle": "Platform Engineer",
+    "worksFor": { "@type": "Organization", "name": "Rakuten" },
+    "url": "https://sharath94z.github.io/",
+    "email": "mailto:sharatham94@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Tokyo", "addressCountry": "JP" },
+    "sameAs": [
+      "https://github.com/sharath94z",
+      "https://linkedin.com/in/sharath-aradhyamath"
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -23,7 +50,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 
     body {
       background: var(--white);
@@ -129,9 +156,11 @@
     }
 
     .nav-links a:hover { color: var(--ink); }
-    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+    .nav-links a.active { color: var(--ink); }
 
-    /* ── PAGE LOAD PROGRESS BAR ── */
+    /* ── SCROLL PROGRESS BAR ── */
     #progress-bar {
       position: fixed;
       top: 0; left: 0;
@@ -139,12 +168,12 @@
       width: 0%;
       background: var(--accent);
       z-index: 200;
-      transition: width 0.1s linear;
     }
 
     /* ── HERO ── */
     #hero {
       min-height: 100vh;
+      min-height: 100dvh;
       display: grid;
       grid-template-columns: 1fr 1fr;
       padding-top: 64px;
@@ -213,6 +242,7 @@
       letter-spacing: -1.5px;
       color: var(--ink);
       margin-bottom: 28px;
+      text-wrap: balance;
     }
 
     h1 em {
@@ -247,8 +277,15 @@
       letter-spacing: 0.05em;
       text-decoration: none;
       border-radius: 4px;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s ease, box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
+    }
+
+    .btn:active { transform: translateY(1px) scale(0.98); }
+
+    .btn-sm {
+      font-size: 12px;
+      padding: 8px 18px;
     }
 
     .btn-fill {
@@ -261,6 +298,11 @@
       background: var(--accent);
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(200, 75, 47, 0.25);
+    }
+
+    .btn-fill:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: none;
     }
 
     .btn-outline {
@@ -289,39 +331,6 @@
       padding: 60px 60px 120px;
       position: relative;
       overflow: hidden;
-    }
-
-    /* ── SCROLL INDICATOR (Mobile Only) ── */
-    .scroll-indicator {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 60px;
-      animation: fadeInUp 0.6s ease 1s both;
-    }
-
-    .scroll-text {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-
-    .scroll-arrow {
-      font-size: 16px;
-      color: var(--mid);
-      animation: bounce 2s ease-in-out infinite;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(6px); }
     }
 
     /* ── CURRENTLY CARD ── */
@@ -354,7 +363,7 @@
       width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--accent);
-      animation: pulse-green 2s infinite;
+      animation: pulse-accent 2s infinite;
     }
 
     .currently-company {
@@ -371,7 +380,7 @@
       font-weight: 500;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.62);
       margin-bottom: 24px;
     }
 
@@ -392,7 +401,7 @@
 
     .currently-detail-label {
       font-size: 12px;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.6);
       font-weight: 500;
       letter-spacing: 0.05em;
     }
@@ -403,7 +412,7 @@
       font-weight: 500;
     }
 
-    @keyframes pulse-green {
+    @keyframes pulse-accent {
       0%, 100% { box-shadow: 0 0 0 0 rgba(200,75,47,0.4); }
       50% { box-shadow: 0 0 0 5px rgba(200,75,47,0); }
     }
@@ -437,6 +446,7 @@
       color: var(--ink);
       letter-spacing: -0.8px;
       line-height: 1.1;
+      text-wrap: balance;
     }
 
     .section-label-line {
@@ -495,7 +505,7 @@
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--mid);
+      color: #6e6b65;
       border-right: 1px solid var(--stone);
       display: flex;
       align-items: center;
@@ -511,7 +521,17 @@
       border: 1px solid var(--stone);
       padding: 3px 11px;
       border-radius: 100px;
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
     }
+
+    .pill:hover {
+      transform: scale(1.08);
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .pill:active { transform: scale(0.96); }
 
     /* ── EXPERIENCE ── */
     #experience { background: var(--white); }
@@ -530,7 +550,7 @@
       margin: 0 -32px;
       border-radius: 8px;
       border-top: 1px solid var(--stone);
-      transition: all 0.3s ease;
+      transition: background 0.3s ease;
       position: relative;
     }
 
@@ -563,16 +583,17 @@
       font-size: 12px;
       font-weight: 500;
       letter-spacing: 0.08em;
-      color: var(--mid);
+      color: #6e6b65;
       margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
     }
 
     .exp-location {
       font-size: 12px;
-      color: var(--mid);
+      color: #6e6b65;
     }
 
-    .exp-body {}
+    .exp-body { min-width: 0; }
 
     .exp-company {
       font-family: var(--serif);
@@ -637,7 +658,7 @@
       border: 1px solid var(--stone);
       padding: 5px 12px;
       border-radius: 4px;
-      transition: all 0.2s ease;
+      transition: border-color 0.2s ease, color 0.2s ease;
     }
 
     .exp-tag:hover {
@@ -681,6 +702,7 @@
       letter-spacing: -1px;
       line-height: 1.15;
       margin-bottom: 24px;
+      text-wrap: balance;
     }
 
     .contact-left h3 em {
@@ -714,12 +736,15 @@
       padding: 20px 24px;
       border-radius: 6px;
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease, transform 0.15s ease;
     }
 
     .contact-link-row:last-child { border-bottom: none; }
     .contact-link-row:hover {
       background: rgba(255, 255, 255, 0.04);
+    }
+    .contact-link-row:active {
+      transform: scale(0.99);
     }
 
     .contact-link-label {
@@ -727,7 +752,7 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #6e6b65;
+      color: #8a867e;
     }
 
     .contact-link-val {
@@ -739,9 +764,9 @@
     }
 
     .contact-link-val .arrow {
-      color: #6e6b65;
+      color: #8a867e;
       font-size: 13px;
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease, color 0.2s ease;
     }
 
     .contact-link-row:hover .arrow {
@@ -770,7 +795,7 @@
 
     footer p {
       font-size: 12px;
-      color: #6e6b65;
+      color: #8a867e;
     }
 
     footer p span { color: var(--mid); }
@@ -822,26 +847,14 @@
       transform: translateY(0);
     }
 
-    /* ── SKILL PILL HOVER POP ── */
-    .pill {
-      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s, border-color 0.15s;
-    }
-
-    .pill:hover {
-      transform: scale(1.08);
-      background: var(--accent-light);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       nav { padding: 0 24px; height: 64px; }
       .nav-links { display: none; }
-      .nav-mobile-cta { display: block; }
       #hero { grid-template-columns: 1fr; }
       .hero-left { padding: 60px 24px; border-right: none; }
-      .hero-right { display: none; }
+      .hero-right { padding: 48px 24px 72px; justify-content: center; }
+      .currently-card { max-width: 440px; margin: 0 auto; animation-delay: 0.5s; }
       .hero-divider-circle { display: none; }
       .hero-sun-flare { display: none; }
       .section-wrap { padding: 72px 24px; }
@@ -854,14 +867,11 @@
       footer { flex-direction: column; gap: 8px; text-align: center; }
       .contact-left h3 { font-size: 36px; }
     }
-
-    @media (min-width: 901px) {
-      .nav-mobile-cta { display: none; }
-      .scroll-indicator { display: none !important; }
-    }
   </style>
 </head>
 <body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- NAV -->
   <nav>
@@ -872,8 +882,10 @@
       <li><a href="#experience">Experience</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="sharath-aradhyamath-resume.pdf" download="sharath-aradhyamath-resume.pdf" class="btn btn-fill" style="font-size:12px; padding: 8px 18px;">Download CV</a>
+    <a href="sharath-aradhyamath-resume.pdf" download="sharath-aradhyamath-resume.pdf" class="btn btn-fill btn-sm">Download CV</a>
   </nav>
+
+  <main id="main">
 
   <!-- HERO -->
   <section id="hero">
@@ -925,12 +937,8 @@
       <div class="hero-cta">
         <a href="#contact" class="btn btn-fill">Get in touch</a>
         <a href="sharath-aradhyamath-resume.pdf" download="sharath-aradhyamath-resume.pdf" class="btn btn-outline">Download CV ↓</a>
-        <a href="https://github.com/sharath94z" target="_blank" class="btn btn-outline">GitHub</a>
-        <a href="https://linkedin.com/in/sharath-aradhyamath" target="_blank" class="btn btn-outline">LinkedIn</a>
-      </div>
-      <div class="scroll-indicator">
-        <span class="scroll-text">Scroll</span>
-        <span class="scroll-arrow">↓</span>
+        <a href="https://github.com/sharath94z" target="_blank" rel="noopener noreferrer" class="btn btn-outline">GitHub</a>
+        <a href="https://linkedin.com/in/sharath-aradhyamath" target="_blank" rel="noopener noreferrer" class="btn btn-outline">LinkedIn</a>
       </div>
     </div>
 
@@ -1180,21 +1188,23 @@
             <span class="contact-link-label">Email</span>
             <span class="contact-link-val">sharatham94@gmail.com <span class="arrow">↗</span></span>
           </a>
-          <a href="https://linkedin.com/in/sharath-aradhyamath" target="_blank" class="contact-link-row">
+          <a href="https://linkedin.com/in/sharath-aradhyamath" target="_blank" rel="noopener noreferrer" class="contact-link-row">
             <span class="contact-link-label">LinkedIn</span>
             <span class="contact-link-val">sharath-aradhyamath <span class="arrow">↗</span></span>
           </a>
-          <a href="https://github.com/sharath94z" target="_blank" class="contact-link-row">
+          <a href="https://github.com/sharath94z" target="_blank" rel="noopener noreferrer" class="contact-link-row">
             <span class="contact-link-label">GitHub</span>
-            <span class="contact-link-val">sharath-aradhyamath <span class="arrow">↗</span></span>
+            <span class="contact-link-val">sharath94z <span class="arrow">↗</span></span>
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROGRESS BAR -->
-  <div id="progress-bar"></div>
+  </main>
+
+  <!-- SCROLL PROGRESS BAR -->
+  <div id="progress-bar" aria-hidden="true"></div>
 
   <!-- FOOTER -->
   <footer>
@@ -1211,19 +1221,15 @@
     const yearWords = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'];
     document.getElementById('exp-years').textContent = yearWords[years] || years;
 
-    // ── PAGE LOAD PROGRESS BAR ──
+    // ── SCROLL PROGRESS BAR ──
     const bar = document.getElementById('progress-bar');
-    let width = 0;
-    const interval = setInterval(() => {
-      width += Math.random() * 18;
-      if (width >= 90) { clearInterval(interval); width = 90; }
-      bar.style.width = width + '%';
-    }, 80);
-    window.addEventListener('load', () => {
-      clearInterval(interval);
-      bar.style.width = '100%';
-      setTimeout(() => { bar.style.opacity = '0'; bar.style.transition = 'opacity 0.4s'; }, 300);
-    });
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = max > 0 ? (window.scrollY / max) * 100 + '%' : '0%';
+    };
+    document.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress, { passive: true });
+    updateProgress();
 
     // ── SCROLL REVEAL ──
     const observer = new IntersectionObserver((entries) => {
@@ -1237,19 +1243,25 @@
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // ── ACTIVE NAV ON SCROLL ──
+    // ── ACTIVE NAV ON SCROLL (IntersectionObserver) ──
     const navLinks = document.querySelectorAll('.nav-links a');
-    const ids = ['hero', 'skills', 'experience', 'contact'];
-    window.addEventListener('scroll', () => {
-      let cur = '';
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && window.scrollY >= el.offsetTop - 100) cur = id;
-      });
-      navLinks.forEach(a => {
-        a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--ink)' : '';
-      });
+    const linkBySection = new Map();
+    navLinks.forEach(a => {
+      const section = document.querySelector(a.getAttribute('href'));
+      if (section) linkBySection.set(section, a);
     });
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const activeLink = linkBySection.get(entry.target);
+        if (!activeLink) return;
+        navLinks.forEach(a => a.classList.remove('active'));
+        activeLink.classList.add('active');
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+
+    linkBySection.forEach((_, section) => navObserver.observe(section));
   </script>
 </body>
 </html>
