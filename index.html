@@ -33,6 +33,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <noscript>
+    <style>
+      .exp-details { grid-template-rows: 1fr; }
+      .exp-details-inner { visibility: visible; }
+      .exp-toggle { display: none; }
+    </style>
+  </noscript>
   <style>
     :root {
       --white: #ffffff;
@@ -610,8 +617,64 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 22px;
+      margin-bottom: 14px;
     }
+
+    /* ── EXPANDABLE JOB DETAILS ── */
+    .exp-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: transparent;
+      border: 1px solid var(--stone);
+      border-radius: 100px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .exp-toggle:hover,
+    .exp-toggle[aria-expanded="true"] {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .exp-toggle .chev {
+      display: inline-flex;
+      transition: transform 0.25s ease;
+    }
+
+    .exp-toggle[aria-expanded="true"] .chev {
+      transform: rotate(180deg);
+    }
+
+    .exp-details {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .exp-item.open .exp-details { grid-template-rows: 1fr; }
+
+    .exp-details-inner {
+      overflow: hidden;
+      min-height: 0;
+      visibility: hidden;
+      transition: visibility 0s 0.35s;
+    }
+
+    .exp-item.open .exp-details-inner {
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
+    .exp-details .exp-points { padding-top: 18px; }
 
     .exp-points {
       list-style: none;
@@ -867,6 +930,12 @@
       footer { flex-direction: column; gap: 8px; text-align: center; }
       .contact-left h3 { font-size: 36px; }
     }
+
+    @media print {
+      .exp-details { grid-template-rows: 1fr !important; }
+      .exp-details-inner { visibility: visible !important; }
+      .exp-toggle { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -1053,9 +1122,17 @@
           <div class="exp-body">
             <div class="exp-company">Rakuten</div>
             <div class="exp-role">Platform Engineer</div>
-            <ul class="exp-points">
-              <li>Platform engineering at one of Japan's largest technology and e-commerce companies, operating across global-scale infrastructure.</li>
-            </ul>
+            <button class="exp-toggle" aria-expanded="false" aria-controls="exp-details-rakuten">
+              1 highlight
+              <svg class="chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="exp-details" id="exp-details-rakuten">
+              <div class="exp-details-inner">
+                <ul class="exp-points">
+                  <li>Platform engineering at one of Japan's largest technology and e-commerce companies, operating across global-scale infrastructure.</li>
+                </ul>
+              </div>
+            </div>
             <div class="exp-tags">
               <span class="exp-tag">Platform Engineering</span>
               <span class="exp-tag">Tokyo</span>
@@ -1071,11 +1148,19 @@
           <div class="exp-body">
             <div class="exp-company">Safe Security</div>
             <div class="exp-role">DevOps Engineer</div>
-            <ul class="exp-points">
-              <li>Redesigned CI/CD pipeline using reusable GitHub Actions workflows, providing a structured framework for cross-team adoption and faster shipping.</li>
-              <li>Migrated the entire AWS CDK codebase to Terraform, significantly improving infrastructure maintainability and module reusability.</li>
-              <li>Decomposed a monolithic repository into independently deployable microservices, reducing deployment risk and enabling team autonomy.</li>
-            </ul>
+            <button class="exp-toggle" aria-expanded="false" aria-controls="exp-details-safe">
+              3 highlights
+              <svg class="chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="exp-details" id="exp-details-safe">
+              <div class="exp-details-inner">
+                <ul class="exp-points">
+                  <li>Redesigned CI/CD pipeline using reusable GitHub Actions workflows, providing a structured framework for cross-team adoption and faster shipping.</li>
+                  <li>Migrated the entire AWS CDK codebase to Terraform, significantly improving infrastructure maintainability and module reusability.</li>
+                  <li>Decomposed a monolithic repository into independently deployable microservices, reducing deployment risk and enabling team autonomy.</li>
+                </ul>
+              </div>
+            </div>
             <div class="exp-tags">
               <span class="exp-tag">Terraform</span>
               <span class="exp-tag">GitHub Actions</span>
@@ -1093,13 +1178,21 @@
           <div class="exp-body">
             <div class="exp-company">Rapyuta Robotics</div>
             <div class="exp-role">Site Reliability Engineer</div>
-            <ul class="exp-points">
-              <li>Built a full observability platform (Prometheus, Loki, Tempo, Grafana + OpenTelemetry) delivering real-time insights across 100+ active warehouse robots.</li>
-              <li>Authored Ansible playbooks with a Semaphore UI frontend, enabling non-engineers to independently trigger complex robot onboarding tasks.</li>
-              <li>Introduced PostgreSQL backup and recovery via Barman, dramatically reducing RTO and boosting confidence in the operations team's ability to recover from data corruption.</li>
-              <li>Sole SRE in a 25+ engineer ASRS product team, reporting directly to the CEO — handling everything from hardware procurement to production incident response.</li>
-              <li>Managed the entire wireless network infrastructure (Unifi Dream Machine SE, switches, APs) for the robot fleet, including coverage optimisation via Unifi Design Center.</li>
-            </ul>
+            <button class="exp-toggle" aria-expanded="false" aria-controls="exp-details-rapyuta">
+              5 highlights
+              <svg class="chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="exp-details" id="exp-details-rapyuta">
+              <div class="exp-details-inner">
+                <ul class="exp-points">
+                  <li>Built a full observability platform (Prometheus, Loki, Tempo, Grafana + OpenTelemetry) delivering real-time insights across 100+ active warehouse robots.</li>
+                  <li>Authored Ansible playbooks with a Semaphore UI frontend, enabling non-engineers to independently trigger complex robot onboarding tasks.</li>
+                  <li>Introduced PostgreSQL backup and recovery via Barman, dramatically reducing RTO and boosting confidence in the operations team's ability to recover from data corruption.</li>
+                  <li>Sole SRE in a 25+ engineer ASRS product team, reporting directly to the CEO — handling everything from hardware procurement to production incident response.</li>
+                  <li>Managed the entire wireless network infrastructure (Unifi Dream Machine SE, switches, APs) for the robot fleet, including coverage optimisation via Unifi Design Center.</li>
+                </ul>
+              </div>
+            </div>
             <div class="exp-tags">
               <span class="exp-tag">Prometheus</span>
               <span class="exp-tag">Grafana</span>
@@ -1118,13 +1211,21 @@
           <div class="exp-body">
             <div class="exp-company">Vogo Automotive</div>
             <div class="exp-role">DevOps Engineer</div>
-            <ul class="exp-points">
-              <li>Led and mentored a 3-person DevOps team, setting standards for deployments, on-call, and infrastructure quality.</li>
-              <li>Migrated 95% of all workloads to Kubernetes on EKS — including stateful services like MongoDB, Kafka, and Airflow — reducing downtime and infrastructure costs.</li>
-              <li>Built a full GitHub Actions + Spinnaker pipeline for rapid, stable production releases with developer-facing feedback loops.</li>
-              <li>Automated Android APK builds and Play Store releases with Fastlane, removing a manual bottleneck for QA and developers.</li>
-              <li>Deployed and operated a Linked Service Mesh, improving inter-service security and network observability.</li>
-            </ul>
+            <button class="exp-toggle" aria-expanded="false" aria-controls="exp-details-vogo">
+              5 highlights
+              <svg class="chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="exp-details" id="exp-details-vogo">
+              <div class="exp-details-inner">
+                <ul class="exp-points">
+                  <li>Led and mentored a 3-person DevOps team, setting standards for deployments, on-call, and infrastructure quality.</li>
+                  <li>Migrated 95% of all workloads to Kubernetes on EKS — including stateful services like MongoDB, Kafka, and Airflow — reducing downtime and infrastructure costs.</li>
+                  <li>Built a full GitHub Actions + Spinnaker pipeline for rapid, stable production releases with developer-facing feedback loops.</li>
+                  <li>Automated Android APK builds and Play Store releases with Fastlane, removing a manual bottleneck for QA and developers.</li>
+                  <li>Deployed and operated a Linked Service Mesh, improving inter-service security and network observability.</li>
+                </ul>
+              </div>
+            </div>
             <div class="exp-tags">
               <span class="exp-tag">Kubernetes</span>
               <span class="exp-tag">EKS</span>
@@ -1144,11 +1245,19 @@
           <div class="exp-body">
             <div class="exp-company">Evive</div>
             <div class="exp-role">DevOps Engineer</div>
-            <ul class="exp-points">
-              <li>Sole DevOps engineer for the MyEvive product — owned cloud infrastructure, deployments to staging and production, and peak-season capacity planning.</li>
-              <li>Wrote Salt modules to auto-configure new servers, reducing manual provisioning overhead.</li>
-              <li>Reduced developer workload by building migration and ETL scripts, and providing debugging support for reporting pipeline issues.</li>
-            </ul>
+            <button class="exp-toggle" aria-expanded="false" aria-controls="exp-details-evive">
+              3 highlights
+              <svg class="chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="exp-details" id="exp-details-evive">
+              <div class="exp-details-inner">
+                <ul class="exp-points">
+                  <li>Sole DevOps engineer for the MyEvive product — owned cloud infrastructure, deployments to staging and production, and peak-season capacity planning.</li>
+                  <li>Wrote Salt modules to auto-configure new servers, reducing manual provisioning overhead.</li>
+                  <li>Reduced developer workload by building migration and ETL scripts, and providing debugging support for reporting pipeline issues.</li>
+                </ul>
+              </div>
+            </div>
             <div class="exp-tags">
               <span class="exp-tag">AWS</span>
               <span class="exp-tag">Salt Stack</span>
@@ -1242,6 +1351,15 @@
     }, { threshold: 0.08 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── EXPERIENCE EXPAND/COLLAPSE (independent toggles) ──
+    document.querySelectorAll('.exp-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.exp-item');
+        const open = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open);
+      });
+    });
 
     // ── ACTIVE NAV ON SCROLL (IntersectionObserver) ──
     const navLinks = document.querySelectorAll('.nav-links a');
